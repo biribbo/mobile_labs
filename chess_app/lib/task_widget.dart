@@ -12,6 +12,7 @@ class TaskWidget extends StatefulWidget {
 
 class _TaskWidgetState extends State<TaskWidget> {
   final bucket = TaskBucket.forDay(tasks, Day.today);
+  final allBucket = TaskBucket(day: Day.today, tasks: tasks);
   late var sumAll = 0;
   late var sumDone = 0;
   late var average = 0.0;
@@ -20,28 +21,75 @@ class _TaskWidgetState extends State<TaskWidget> {
   Widget build(BuildContext context) {
     sumAll = bucket.sumAll;
     sumDone = bucket.sumDone;
-    average = bucket.averageTasksDoneExceptToday;
+    average = allBucket.averageTasksDoneExceptToday;
     return Scaffold(
         appBar: AppBar(title: const Text("Task stats")),
-        body: Column(
-          children: [
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(children: [
             const Chart(
               tasks: tasks,
             ),
+            const SizedBox(height: 50),
             Card(
-              child: Row(
-                children: [
-                  const Text("Today's tasks"),
-                  Text("$sumDone/$sumAll")
-                ],
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Row(children: [
+                        Text(
+                          "Today's tasks",
+                          style: TextStyle(fontSize: 22.0),
+                        )
+                      ]),
+                    ),
+                    Flexible(
+                        flex: 0,
+                        child: Row(
+                          children: [
+                            Text(
+                              "$sumDone/$sumAll",
+                              style: const TextStyle(fontSize: 22.0),
+                            )
+                          ],
+                        ))
+                  ],
+                ),
               ),
             ),
             Card(
-              child: Row(
-                children: [const Text("Average tasks done"), Text("$average")],
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 32.0),
+                child: Row(children: [
+                  const Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Average tasks done",
+                          style: TextStyle(fontSize: 22.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          average.toStringAsFixed(2),
+                          textAlign: TextAlign.end,
+                          style: const TextStyle(fontSize: 22.0),
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
               ),
             )
-          ],
+          ]),
         ));
   }
 }

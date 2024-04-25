@@ -1,3 +1,5 @@
+import 'package:logging/logging.dart';
+
 enum Day {
   monday,
   tuesday,
@@ -19,6 +21,7 @@ class Task {
 }
 
 class TaskBucket {
+  Logger logger = Logger("task_bucket_logger");
   final Day day;
   final List<Task> tasks;
 
@@ -54,7 +57,7 @@ class TaskBucket {
   double get averageTasksDoneExceptToday {
     var otherDaysTasks = tasks.where((task) => task.day != Day.today).toList();
     var sumDoneOtherDays = otherDaysTasks.where((task) => task.isDone).length;
-    var sumAllOtherDays = otherDaysTasks.length;
-    return sumDoneOtherDays / sumAllOtherDays;
+    logger.info(sumDoneOtherDays);
+    return sumDoneOtherDays / 7;
   }
 }
