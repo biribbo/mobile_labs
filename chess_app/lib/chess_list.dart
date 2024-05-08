@@ -4,6 +4,7 @@ import 'package:lab_3/chess_board_page.dart';
 import 'package:lab_3/chess_item.dart';
 import 'package:lab_3/my_chess_items.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChessList extends StatefulWidget {
   const ChessList({super.key});
@@ -17,6 +18,26 @@ class _ChessListState extends State<ChessList> {
   Logger logger = Logger('My Logger');
   int idx = 0;
   List<ChessItem> chessItems = myChessItems;
+
+  @override
+  void initState() {
+    super.initState();
+    _initTasks();
+  }
+
+  Future<void> _initTasks() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    for (int i = 0; i < myChessItems.length; i++) {
+      final String key = 'task_${i}_done';
+      final bool? isDone = prefs.getBool(key);
+      if (isDone != null) {
+        myChessItems[i].isDone = isDone;
+      }
+    }
+
+    setState(() {});
+  }
 
   void changePage(int newIdx) {
     setState(() {

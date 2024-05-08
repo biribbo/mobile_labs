@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab_3/chess_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckableTodoItem extends StatefulWidget {
   const CheckableTodoItem(
@@ -17,10 +18,15 @@ class CheckableTodoItem extends StatefulWidget {
 }
 
 class _CheckableTodoItemState extends State<CheckableTodoItem> {
-  void _setDone(bool? isChecked) {
+  void _setDone(bool? isChecked) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String key = 'task_${widget.idx}_done';
+
     setState(() {
       widget.item.isDone = isChecked ?? false;
     });
+
+    await prefs.setBool(key, widget.item.isDone);
   }
 
   @override
