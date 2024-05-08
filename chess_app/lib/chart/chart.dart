@@ -16,7 +16,6 @@ class Chart extends StatelessWidget {
       TaskBucket.forDay(tasks, Day.friday),
       TaskBucket.forDay(tasks, Day.saturday),
       TaskBucket.forDay(tasks, Day.sunday),
-      TaskBucket.forDay(tasks, Day.today),
     ];
   }
 
@@ -35,7 +34,7 @@ class Chart extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            Theme.of(context).colorScheme.primary.withOpacity(0.0)
+            Theme.of(context).colorScheme.primary.withOpacity(0.1)
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -58,8 +57,10 @@ class Chart extends StatelessWidget {
                 .map(
                   (bucket) => Expanded(
                     child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Text(bucket.day.toString())),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(bucket.day.toString().substring(4, 7),
+                          textAlign: TextAlign.center),
+                    ),
                   ),
                 )
                 .toList(),
